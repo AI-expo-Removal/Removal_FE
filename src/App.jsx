@@ -1,5 +1,7 @@
+import Start from "./Pages/start";
+
 function App() {
-  return <></>;
+  return <Start></Start>;
 }
 
 export default App;
