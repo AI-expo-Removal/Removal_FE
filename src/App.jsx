@@ -1,7 +1,17 @@
-import Start from "./Pages/start";
+import React from "react";
+import { Router } from "./router/router";
+import { GlobalStyle } from "./styles/globalStyle";
+import { styled } from "styled-components";
 
-function App() {
-  return <Start></Start>;
-}
+export const App = () => {
+  return (
+    <Wrapper>
+      <GlobalStyle />
+      <Router />
+    </Wrapper>
+  );
+};
 
-export default App;
+const Wrapper = styled.div`
+  overflow: hidden;
+`;

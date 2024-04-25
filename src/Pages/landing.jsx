@@ -7,7 +7,7 @@ import New from "../images/New_Edit.png";
 import Start_Page from "../images/Start.png";
 import Mobile from "../images/mobile_removal.png";
 
-function Start() {
+export const Landing = () => {
   return (
     <>
       <_Container>
@@ -60,9 +60,7 @@ function Start() {
       </_Container>
     </>
   );
-}
-
-export default Start;
+};
 
 const _Container = styled.div`
   background-color: black;
