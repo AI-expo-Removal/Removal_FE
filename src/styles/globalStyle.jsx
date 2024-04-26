@@ -75,7 +75,7 @@ export const GlobalStyle = createGlobalStyle`
     resize: none;
     box-sizing: border-box;
     font-family: 'Pretendard', sans-serif;
-    font-weight:100;
+    font-weight:400;
     color:black
   }
 `;
