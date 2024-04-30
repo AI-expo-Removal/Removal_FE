@@ -13,7 +13,6 @@ export const Edit = () => {
   const [isPause, setIsPause] = useState(true);
   const [currentTime, setCurrentTime] = useState(0);
   const [markerPosition, setMarkerPosition] = useState(0);
-  const [isOpen, setIsOpen] = useState(false);
 
   const updateMarkerPosition = () => {
     if (videoRef.current) {
@@ -124,7 +123,7 @@ export const Edit = () => {
     <TopContainer>
       <Header />
       <Container>
-        <SideBar isOpen={isOpen} setIsOpen={setIsOpen} />
+        <SideBar />
         <Wrapper>
           <VideoWrapper>
             <Video ref={videoRef}>
@@ -237,6 +236,7 @@ const Wrapper = styled.div`
 
 const VideoWrapper = styled.div`
   width: 100%;
+  padding-left: 120px;
   display: flex;
   justify-content: center;
 `;
