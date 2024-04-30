@@ -1,12 +1,15 @@
 import styled from "styled-components";
-import Logo from "./images/Logo.png";
+import logoSrc from "../images/logo.png";
 
 function Header() {
   return (
     <div className="App">
       <_Container>
-        <_StyledLogo src={Logo} alt="Logo" />
-        <_Header_Input type="text" placeholder="제목을 입력해주세요" />
+        <_Left>
+          <_StyledLogo src={logoSrc} alt="Logo" />
+          <_Header_Input type="text" placeholder="제목을 입력해주세요" />
+        </_Left>
+        <_Button>내보내기</_Button>
       </_Container>
     </div>
   );
@@ -17,8 +20,17 @@ export default Header;
 const _Container = styled.div`
   position: relative;
   display: flex;
+  align-items: center;
+  justify-content: space-between;
   background-color: black;
-  padding: 20px;
+  padding: 0 60px 0 60px;
+  height: 90px;
+`;
+
+const _Left = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 60px;
 `;
 
 const _StyledLogo = styled.img`
@@ -38,5 +50,21 @@ const _Header_Input = styled.input`
   &:focus {
     outline: none;
     border-bottom-color: gray;
+  }
+`;
+
+const _Button = styled.div`
+  width: 96px;
+  height: 44px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #3067ff 0%, #62c9ff 100%);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: 0.2s linear;
+  &:hover {
+    opacity: 0.9;
   }
 `;

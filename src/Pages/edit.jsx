@@ -1,6 +1,10 @@
 import React, { useRef, useState, useEffect } from "react";
 import videoSrc from "../images/video/dummy.mp4";
+import playSrc from "../images/svg/play.svg";
+import stopSrc from "../images/svg/stop.svg";
 import { styled } from "styled-components";
+import { SideBar } from "../components/sidebar";
+import Header from "../components/header";
 
 export const Edit = () => {
   const videoRef = useRef(null);
@@ -9,6 +13,7 @@ export const Edit = () => {
   const [isPause, setIsPause] = useState(true);
   const [currentTime, setCurrentTime] = useState(0);
   const [markerPosition, setMarkerPosition] = useState(0);
+  const [isOpen, setIsOpen] = useState(false);
 
   const updateMarkerPosition = () => {
     if (videoRef.current) {
@@ -16,7 +21,6 @@ export const Edit = () => {
       const dynamicTimelineWidth = 120 * videoDuration;
       const positionRatio = currentTime / videoDuration;
       const positionInPixels = positionRatio * dynamicTimelineWidth;
-      // console.log(videoDuration, positionRatio, positionInPixels);
       setMarkerPosition(positionInPixels);
     }
   };
@@ -78,6 +82,20 @@ export const Edit = () => {
     };
   }, []);
 
+  useEffect(() => {
+    function spaceKey(e) {
+      if (e.code === "Space") {
+        toggleVideoPlay();
+      }
+    }
+
+    window.addEventListener("keydown", spaceKey);
+
+    return () => {
+      window.removeEventListener("keydown", spaceKey);
+    };
+  });
+
   const toggleVideoPlay = () => {
     setIsPause(!isPause);
     if (isPause) {
@@ -88,13 +106,14 @@ export const Edit = () => {
   };
 
   const handleTimelineClick = (e) => {
-    const timelineWidth = timeLineWrapperRef.current.offsetWidth;
-    const clickPositionX = e.nativeEvent.offsetX;
-    const clickRatio = clickPositionX / timelineWidth;
+    const scrollLeft = timeLineWrapperRef.current.scrollLeft;
+    const clickPositionX = e.nativeEvent.offsetX + scrollLeft;
+    const videoDuration = videoRef.current.duration;
+    const dynamicTimelineWidth = 120 * videoDuration;
+    const clickRatio = clickPositionX / dynamicTimelineWidth;
 
-    console.log(timelineWidth, clickPositionX, clickRatio);
+    console.log(dynamicTimelineWidth, clickPositionX, clickRatio);
     if (videoRef.current) {
-      const videoDuration = videoRef.current.duration;
       const newTime = videoDuration * clickRatio;
       console.log(videoDuration, newTime);
       videoRef.current.currentTime = newTime;
@@ -102,82 +121,123 @@ export const Edit = () => {
   };
 
   return (
-    <Container>
-      <Wrapper>
-        <Video ref={videoRef} style={{ width: "1100px", height: "620px" }}>
-          <source src={videoSrc} type="video/mp4" />
-          비디오를 지원하지 않는 브라우저입니다.
-        </Video>
-        <div onClick={toggleVideoPlay}>{isPause ? "시작" : "멈춤"}</div>
-        <TimeLineWrapper ref={timeLineWrapperRef} onClick={handleTimelineClick}>
-          <TimeLine>
-            <Marker style={{ left: `${markerPosition}px` }} />
-
-            {parseInt((document.body.clientWidth / 120).toFixed(0)) + 1 >
-            previewImages.length ? (
-              <>
-                {new Array(
-                  parseInt((document.body.clientWidth / 120).toFixed(0)) + 1
-                )
-                  .fill(null)
-                  .map((_, index) => {
-                    return (
-                      <React.Fragment key={index}>
-                        <Time>{`${String(Math.floor(index / 60)).padStart(
-                          2,
-                          "0"
-                        )}:${String(index % 60).padStart(2, "0")}`}</Time>
-                        {!(
-                          index ===
-                          new Array(
-                            parseInt(
-                              (document.body.clientWidth / 120).toFixed(0)
-                            )
-                          ).length
-                        ) && <Line />}
-                      </React.Fragment>
-                    );
-                  })}
-              </>
-            ) : (
-              <>
-                {previewImages.map((_, index) => {
-                  return (
-                    <React.Fragment key={index}>
-                      <Time>{`${String(Math.floor(index / 60)).padStart(
-                        2,
-                        "0"
-                      )}:${String(index % 60).padStart(2, "0")}`}</Time>
-                      {!(index === previewImages.length - 1) && <Line />}
-                    </React.Fragment>
-                  );
-                })}
-              </>
-            )}
-          </TimeLine>
-          <ImgContainer>
-            {previewImages.map((src, index) => (
-              <ImgWrapper key={index}>
-                <img
-                  src={src}
-                  alt={`Preview ${index}`}
-                  style={{ height: "80px" }}
+    <TopContainer>
+      <Header />
+      <Container>
+        <SideBar isOpen={isOpen} setIsOpen={setIsOpen} />
+        <Wrapper>
+          <VideoWrapper>
+            <Video ref={videoRef} style={{ width: "1100px", height: "620px" }}>
+              <source src={videoSrc} type="video/mp4" />
+              비디오를 지원하지 않는 브라우저입니다.
+            </Video>
+          </VideoWrapper>
+          <BottomWrapper>
+            <VideoMenuWrapper>
+              <TimeInfo>
+                {currentTime.toFixed(2)}
+                <span>/{videoRef.current?.duration.toFixed(2)}</span>
+              </TimeInfo>
+              <div onClick={toggleVideoPlay}>
+                {isPause ? <img src={playSrc} /> : <img src={stopSrc} />}
+              </div>
+              <div></div>
+            </VideoMenuWrapper>
+            <TimeLineWrapper
+              ref={timeLineWrapperRef}
+              onClick={handleTimelineClick}>
+              <TimeLine>
+                <Marker
+                  style={{ left: `${markerPosition}px` }}
+                  isPause={isPause}
                 />
-              </ImgWrapper>
-            ))}
-          </ImgContainer>
-        </TimeLineWrapper>
-      </Wrapper>
-    </Container>
+                {parseInt((document.body.clientWidth / 120).toFixed(0)) + 1 >
+                previewImages.length ? (
+                  <>
+                    {new Array(
+                      parseInt((document.body.clientWidth / 120).toFixed(0)) + 1
+                    )
+                      .fill(null)
+                      .map((_, index) => {
+                        return (
+                          <React.Fragment key={index}>
+                            <Time>{`${String(Math.floor(index / 60)).padStart(
+                              2,
+                              "0"
+                            )}:${String(index % 60).padStart(2, "0")}`}</Time>
+                            {!(
+                              index ===
+                              new Array(
+                                parseInt(
+                                  (document.body.clientWidth / 120).toFixed(0)
+                                )
+                              ).length
+                            ) && <Line />}
+                          </React.Fragment>
+                        );
+                      })}
+                  </>
+                ) : (
+                  <>
+                    {previewImages.map((_, index) => {
+                      return (
+                        <React.Fragment key={index}>
+                          <Time>{`${String(Math.floor(index / 60)).padStart(
+                            2,
+                            "0"
+                          )}:${String(index % 60).padStart(2, "0")}`}</Time>
+                          {!(index === previewImages.length - 1) && <Line />}
+                        </React.Fragment>
+                      );
+                    })}
+                  </>
+                )}
+              </TimeLine>
+              <ImgContainer>
+                {previewImages.map((src, index) => (
+                  <ImgWrapper key={index}>
+                    <img
+                      src={src}
+                      alt={`Preview ${index}`}
+                      style={{ height: "80px" }}
+                    />
+                  </ImgWrapper>
+                ))}
+              </ImgContainer>
+            </TimeLineWrapper>
+          </BottomWrapper>
+        </Wrapper>
+      </Container>
+    </TopContainer>
   );
 };
 
+const TopContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+`;
+
 const Container = styled.div`
   display: flex;
+  width: 100vw;
+  height: 100vh;
+  background-color: #141414;
 `;
 
 const Wrapper = styled.div`
   width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  gap: 48px;
+`;
+
+const VideoWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
 `;
 
 const Video = styled.video`
@@ -185,17 +245,48 @@ const Video = styled.video`
   height: 620px;
 `;
 
+const BottomWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const VideoMenuWrapper = styled.div`
+  width: 100vw;
+  height: 56px;
+  padding: 0 24px 0 144px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  > div {
+    color: white;
+    width: 90px;
+  }
+  > div:nth-child(2) {
+    cursor: pointer;
+  }
+`;
+
+const TimeInfo = styled.div`
+  color: white;
+  font-size: 16px;
+  > span {
+    color: #949494;
+  }
+`;
+
 const TimeLineWrapper = styled.div`
   cursor: pointer;
+  margin-left: 120px;
   width: 100%;
   height: 160px;
+  margin-bottom: 2px;
   display: flex;
   flex-direction: column;
   gap: 24px;
   overflow-x: scroll;
   position: relative;
   &::-webkit-scrollbar {
-    height: 4px;
+    height: 2px;
   }
   &::-webkit-scrollbar-thumb {
     background: lightgray;
@@ -211,34 +302,40 @@ const TimeLine = styled.div`
   display: flex;
   align-items: center;
   height: 28px;
+  pointer-events: none;
 `;
 
 const Marker = styled.div`
   position: absolute;
-  height: 100%;
-  width: 2px;
-  background-color: red;
-  transition: left 0.5s ease-out;
+  bottom: 10px;
+  height: 110px;
+  width: 3px;
+  border-radius: 2px;
+  background-color: white;
+  transition: ${({ isPause }) => (isPause ? "none" : "left 0.5s ease-out")};
+  left: ${({ markerPosition }) => `${markerPosition}px`};
 `;
 
 const Time = styled.div`
-  width: 119.5px;
+  width: 119px;
   display: flex;
   justify-content: center;
   align-items: center;
   flex: none;
+  color: #7a7a7a;
 `;
 
 const Line = styled.div`
   height: 8px;
   width: 1px;
-  background-color: #949494;
+  background-color: #7a7a7a;
   flex: none;
 `;
 
 const ImgContainer = styled.div`
   width: 100%;
   display: flex;
+  pointer-events: none;
 `;
 
 const ImgWrapper = styled.div`
