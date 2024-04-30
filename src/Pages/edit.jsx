@@ -127,7 +127,7 @@ export const Edit = () => {
         <SideBar isOpen={isOpen} setIsOpen={setIsOpen} />
         <Wrapper>
           <VideoWrapper>
-            <Video ref={videoRef} style={{ width: "1100px", height: "620px" }}>
+            <Video ref={videoRef}>
               <source src={videoSrc} type="video/mp4" />
               비디오를 지원하지 않는 브라우저입니다.
             </Video>
@@ -230,8 +230,9 @@ const Wrapper = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: end;
-  gap: 48px;
+  justify-content: space-between;
+  /* gap: 48px; */
+  padding-top: 20px;
 `;
 
 const VideoWrapper = styled.div`
@@ -241,8 +242,8 @@ const VideoWrapper = styled.div`
 `;
 
 const Video = styled.video`
-  width: 1100px;
-  height: 620px;
+  width: 990px;
+  height: 558px;
 `;
 
 const BottomWrapper = styled.div`

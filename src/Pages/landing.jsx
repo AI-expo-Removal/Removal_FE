@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import Logo from "../images/Logo.png";
+import logo from "../images/logo.png";
 import Editor from "../images/Video_Editor.png";
 import plus from "../images/plus.png";
 import Edit from "../images/AI_Edit_With_Click.png";
