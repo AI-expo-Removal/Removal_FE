@@ -8,7 +8,7 @@ import Start_Page from "../images/Start.png";
 import Mobile from "../images/mobile_removal.png";
 import axios from "axios";
 import { baseUrl } from "../apis";
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
 export const Landing = () => {
@@ -24,32 +24,47 @@ export const Landing = () => {
     const file = event.target.files[0];
     if (!file) return;
 
-    const formData = new FormData();
-    formData.append("video", file);
+    const video = document.createElement("video");
+    video.preload = "metadata";
+    video.src = URL.createObjectURL(file);
 
-    // const url = URL.createObjectURL(file);
-    // const encodedUrl = encodeURIComponent(url);
+    video.onloadedmetadata = function () {
+      window.URL.revokeObjectURL(video.src);
+      const duration = video.duration;
 
-    // link(`/edit/${encodedUrl}`);
+      if (duration > 60) {
+        alert(
+          "영상 길이가 1분을 초과합니다. 1분 이하의 영상만 업로드 해주세요."
+        );
+        return;
+      } else {
+        const formData = new FormData();
+        formData.append("file", file);
 
-    axios
-      .post(`${baseUrl}/gets3`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      })
-      .then((response) => {
-        console.log(response.data);
-        alert("성공");
-        const encodedUrl = encodeURIComponent(response.data.file_url);
-        // link(`/edit/${encodedUrl}`);
-      })
-      .catch((err) => {
-        console.log(err);
-        alert("error");
-      });
+        axios
+          .post(`${baseUrl}/gets3`, formData, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          })
+          .then((response) => {
+            console.log(response.data);
+            alert("성공");
+            const encodedUrl = encodeURIComponent(response.data.file_url);
+          })
+          .catch((err) => {
+            console.log(err);
+            alert("error");
+          });
+      }
+    };
   };
 
+  // const url = URL.createObjectURL(file);
+  // const encodedUrl = encodeURIComponent(url);
+
+  // link(`/edit/${encodedUrl}`);
+  // link(`/edit/${encodedUrl}`);
   return (
     <>
       <_Container>
