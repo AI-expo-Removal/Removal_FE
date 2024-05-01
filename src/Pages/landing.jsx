@@ -6,21 +6,70 @@ import Edit from "../images/AI_Edit_With_Click.png";
 import New from "../images/New_Edit.png";
 import Start_Page from "../images/Start.png";
 import Mobile from "../images/mobile_removal.png";
+import axios from "axios";
+import { baseUrl } from "../apis";
+import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export const Landing = () => {
+  const [url, setUrl] = useState("");
+  const link = useNavigate();
+
+  const fileInputRef = useRef(null);
+
+  const triggerFileInput = () => {
+    fileInputRef.current.click();
+  };
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append("video", file);
+
+    const url = URL.createObjectURL(file);
+    const encodedUrl = encodeURIComponent(url);
+
+    link(`/edit/${encodedUrl}`);
+
+    setUrl(decodedUrl);
+
+    // axios
+    //   .post("YOUR_SERVER_ENDPOINT", formData, {
+    //     headers: {
+    //       "Content-Type": "multipart/form-data",
+    //     },
+    //   })
+    //   .then((response) => {
+    //     console.log(response.data);
+    //     fetchFileUrl(response.data.filePath);
+    //   })
+    //   .catch((error) => console.error("Error:", error));
+  };
+
+  useEffect(() => {}, [url]);
+
   return (
     <>
       <_Container>
         <_Header_Container>
-          <_StyledLogo src={Logo} alt="Logo" />
+          <_StyledLogo src={logo} alt="Logo" />
           <_Header_Button>강해민님,안녕하세요</_Header_Button>
         </_Header_Container>
         <_Middle_Container>
           <_Styled_Editor src={Editor}></_Styled_Editor>
           <_Background>
-            <_Upload>
+            <_Upload onClick={triggerFileInput}>
               <_Styled_Plus src={plus}></_Styled_Plus>
               <_Text>영상 업로드</_Text>
+              <input
+                type="file"
+                accept="video/*"
+                style={{ display: "none" }}
+                ref={fileInputRef}
+                onChange={handleFileChange}
+              />
             </_Upload>
           </_Background>
         </_Middle_Container>
@@ -176,6 +225,11 @@ const _Upload = styled.div`
   justify-content: center;
   align-items: center;
   color: white;
+  cursor: pointer;
+  transition: 0.2s linear;
+  &:hover {
+    opacity: 0.8;
+  }
 `;
 
 const _Text = styled.p`

@@ -1,11 +1,17 @@
 import styled from "styled-components";
 import logoSrc from "../images/logo.png";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Header({ src }) {
+  const link = useNavigate();
   const [title, setTitle] = useState("");
 
   const handleDownloadVideo = () => {
+    if (title === "") {
+      alert("제목을 입력해주세요");
+      return;
+    }
     const link = document.createElement("a");
     link.href = src;
     link.download = `${title}.mp4`;
@@ -18,7 +24,13 @@ function Header({ src }) {
     <div className="App">
       <_Container>
         <_Left>
-          <_StyledLogo src={logoSrc} alt="Logo" />
+          <_StyledLogo
+            src={logoSrc}
+            alt="Logo"
+            onClick={() => {
+              link("/");
+            }}
+          />
           <_Header_Input
             type="text"
             placeholder="제목을 입력해주세요"
@@ -55,6 +67,7 @@ const _Left = styled.div`
 const _StyledLogo = styled.img`
   width: 200px;
   height: 50px;
+  cursor: pointer;
 `;
 
 const _Header_Input = styled.input`
