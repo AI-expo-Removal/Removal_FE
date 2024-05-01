@@ -251,6 +251,7 @@ const _Upload = styled.div`
 const _Text = styled.p`
   font-size: 20px;
   font-weight: 700;
+  color: white;
 `;
 
 const _Text2 = styled.p`
