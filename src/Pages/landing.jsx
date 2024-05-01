@@ -12,7 +12,6 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export const Landing = () => {
-  const [url, setUrl] = useState("");
   const link = useNavigate();
 
   const fileInputRef = useRef(null);
@@ -28,27 +27,23 @@ export const Landing = () => {
     const formData = new FormData();
     formData.append("video", file);
 
-    const url = URL.createObjectURL(file);
-    const encodedUrl = encodeURIComponent(url);
+    // const url = URL.createObjectURL(file);
+    // const encodedUrl = encodeURIComponent(url);
 
-    link(`/edit/${encodedUrl}`);
+    // link(`/edit/${encodedUrl}`);
 
-    setUrl(decodedUrl);
-
-    // axios
-    //   .post("YOUR_SERVER_ENDPOINT", formData, {
-    //     headers: {
-    //       "Content-Type": "multipart/form-data",
-    //     },
-    //   })
-    //   .then((response) => {
-    //     console.log(response.data);
-    //     fetchFileUrl(response.data.filePath);
-    //   })
-    //   .catch((error) => console.error("Error:", error));
+    axios
+      .post(`${baseUrl}/gets3`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then((response) => {
+        const encodedUrl = encodeURIComponent(response.data.file_url);
+        link(`/edit/${encodedUrl}`);
+      })
+      .catch(() => alert("error"));
   };
-
-  useEffect(() => {}, [url]);
 
   return (
     <>
