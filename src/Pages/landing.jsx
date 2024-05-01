@@ -226,7 +226,7 @@ const _Background = styled.div`
   background-color: #2e2e2e;
   border-radius: 8px;
   margin-top: 20px;
-  margin-left: 10px;
+  margin-left: 40px;
   display: flex;
   justify-content: center;
   align-items: center;
