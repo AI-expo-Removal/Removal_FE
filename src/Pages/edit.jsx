@@ -140,7 +140,7 @@ export const Edit = () => {
             <SideBar />
             <Wrapper>
               <VideoWrapper>
-                <Video ref={videoRef}>
+                <Video ref={videoRef} crossOrigin="anonymous">
                   <source src={videoSrc} type="video/mp4" />
                   비디오를 지원하지 않는 브라우저입니다.
                 </Video>

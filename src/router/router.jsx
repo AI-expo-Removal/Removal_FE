@@ -8,7 +8,6 @@ export const Router = () => {
       <Routes>
         <Route path="" element={<Landing />} />
         <Route path="/edit/:url" element={<Edit />} />
-        {/* <Route path="*" element={<Error />} /> */}
       </Routes>
     </BrowserRouter>
   );
