@@ -42,7 +42,10 @@ export const Landing = () => {
         const encodedUrl = encodeURIComponent(response.data.file_url);
         link(`/edit/${encodedUrl}`);
       })
-      .catch(() => alert("error"));
+      .catch((err) => {
+        console.log(err);
+        alert("error");
+      });
   };
 
   return (
