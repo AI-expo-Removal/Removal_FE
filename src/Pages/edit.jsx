@@ -170,10 +170,14 @@ export const Edit = () => {
     setIsLoaded(true);
     console.log(videoSrc);
 
-    axios
-      .post(`${baseUrl}/translate`, {
-        s3_url: toString(videoSrc),
-      })
+    axios.post(`${baseUrl}/translate`, {
+    s3_url: videoSrc.toString(),
+  }, {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+
       .then((res) => {
         setIsLoaded(false);
         setVideoSrc(res.data.url);
