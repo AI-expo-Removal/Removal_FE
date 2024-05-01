@@ -50,7 +50,7 @@ export const Landing = () => {
       <_Container>
         <_Header_Container>
           <_StyledLogo src={logo} alt="Logo" />
-          <_Header_Button>강해민님,안녕하세요</_Header_Button>
+          {/* <_Header_Button>강해민님,안녕하세요</_Header_Button> */}
         </_Header_Container>
         <_Middle_Container>
           <_Styled_Editor src={Editor}></_Styled_Editor>
