@@ -26,9 +26,11 @@ const menuDetails = [
   },
 ];
 
-export const SideBar = () => {
+export const SideBar = ({ handleRemoval, handleUpload, handleTranslate }) => {
   const [menu, setMenu] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
+
+  const func = [handleTranslate, handleUpload, handleRemoval];
 
   return (
     <Div>
@@ -59,7 +61,12 @@ export const SideBar = () => {
             return <Text key={index}>{ele}</Text>;
           })}
         </div>
-        <Button>{menuDetails[menu].button}</Button>
+        <Button
+          onClick={() => {
+            func[menu]();
+          }}>
+          {menuDetails[menu].button}
+        </Button>
       </Background>
     </Div>
   );

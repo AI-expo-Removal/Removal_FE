@@ -6,6 +6,8 @@ import { styled } from "styled-components";
 import { SideBar } from "../components/sidebar";
 import Header from "../components/header";
 import { useParams } from "react-router-dom";
+import axios from "axios";
+import { baseUrl } from "../apis";
 
 export const Edit = () => {
   const { url } = useParams();
@@ -130,6 +132,57 @@ export const Edit = () => {
     }
   };
 
+  const handleRemoval = () => {
+    setIsLoaded(true);
+
+    axios
+      .post(`${baseUrl}/removal`, {
+        file_key: videoSrc,
+      })
+      .then((res) => {
+        setIsLoaded(false);
+        setVideoSrc(res.data.url);
+      })
+      .catch(() => {
+        alert("error");
+        setIsLoaded(false);
+      });
+  };
+
+  const handleUpload = () => {
+    setIsLoaded(true);
+
+    axios
+      .post(`${baseUrl}/upload`, {
+        file_key: videoSrc,
+      })
+      .then((res) => {
+        setIsLoaded(false);
+        setVideoSrc(res.data.url);
+      })
+      .catch(() => {
+        alert("error");
+        setIsLoaded(false);
+      });
+  };
+
+  const handleTranslate = () => {
+    setIsLoaded(true);
+
+    axios
+      .post(`${baseUrl}/translate`, {
+        file_key: videoSrc,
+      })
+      .then((res) => {
+        setIsLoaded(false);
+        setVideoSrc(res.data.url);
+      })
+      .catch(() => {
+        alert("error");
+        setIsLoaded(false);
+      });
+  };
+
   return (
     <TopContainer>
       {isLoaded && <Load>Loading...</Load>}
@@ -137,7 +190,11 @@ export const Edit = () => {
         <>
           <Header src={videoSrc} />
           <Container>
-            <SideBar />
+            <SideBar
+              handleRemoval={handleRemoval}
+              handleUpload={handleUpload}
+              handleTranslate={handleTranslate}
+            />
             <Wrapper>
               <VideoWrapper>
                 <Video ref={videoRef} crossOrigin="anonymous">
