@@ -48,9 +48,8 @@ export const Landing = () => {
             },
           })
           .then((response) => {
-            console.log(response.data);
-            alert("성공");
-            const encodedUrl = encodeURIComponent(response.data.file_url);
+            const encodedUrl = encodeURIComponent(response.data.url);
+            link(`/edit/${encodedUrl}`);
           })
           .catch((err) => {
             console.log(err);
