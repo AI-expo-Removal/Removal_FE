@@ -39,6 +39,8 @@ export const Landing = () => {
         },
       })
       .then((response) => {
+        console.log(response.data);
+        alert("성공");
         const encodedUrl = encodeURIComponent(response.data.file_url);
         link(`/edit/${encodedUrl}`);
       })
