@@ -121,7 +121,7 @@ export const Edit = () => {
 
   return (
     <TopContainer>
-      <Header />
+      <Header src={videoSrc} />
       <Container>
         <SideBar />
         <Wrapper>

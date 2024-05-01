@@ -1,15 +1,34 @@
 import styled from "styled-components";
 import logoSrc from "../images/logo.png";
+import { useState } from "react";
 
-function Header() {
+function Header({ src }) {
+  const [title, setTitle] = useState("");
+
+  const handleDownloadVideo = () => {
+    const link = document.createElement("a");
+    link.href = src;
+    link.download = `${title}.mp4`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <div className="App">
       <_Container>
         <_Left>
           <_StyledLogo src={logoSrc} alt="Logo" />
-          <_Header_Input type="text" placeholder="제목을 입력해주세요" />
+          <_Header_Input
+            type="text"
+            placeholder="제목을 입력해주세요"
+            onChange={(e) => {
+              setTitle(e.target.value);
+            }}
+            value={title}
+          />
         </_Left>
-        <_Button>내보내기</_Button>
+        <_Button onClick={handleDownloadVideo}>내보내기</_Button>
       </_Container>
     </div>
   );
