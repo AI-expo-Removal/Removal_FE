@@ -48,8 +48,10 @@ export const Landing = () => {
             },
           })
           .then((response) => {
+            console.log(response.data.url);
             const encodedUrl = encodeURIComponent(response.data.url);
-            link(`/edit/${encodedUrl}`);
+            console.log(encodedUrl);
+            // link(`/edit/${encodedUrl}`);
           })
           .catch((err) => {
             console.log(err);
