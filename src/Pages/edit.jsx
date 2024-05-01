@@ -176,9 +176,7 @@ export const Edit = () => {
     headers: {
       'Content-Type': 'application/json',
     },
-  })
-
-      .then((res) => {
+  }).then((res) => {
         setIsLoaded(false);
         setVideoSrc(res.data.url);
       })
