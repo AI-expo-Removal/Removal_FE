@@ -42,7 +42,7 @@ export const Landing = () => {
         console.log(response.data);
         alert("성공");
         const encodedUrl = encodeURIComponent(response.data.file_url);
-        link(`/edit/${encodedUrl}`);
+        // link(`/edit/${encodedUrl}`);
       })
       .catch((err) => {
         console.log(err);
