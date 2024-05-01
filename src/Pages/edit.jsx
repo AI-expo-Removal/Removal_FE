@@ -137,7 +137,7 @@ export const Edit = () => {
 
     axios
       .post(`${baseUrl}/removal`, {
-        file_key: videoSrc,
+        s3_url: videoSrc,
       })
       .then((res) => {
         setIsLoaded(false);
@@ -154,7 +154,7 @@ export const Edit = () => {
 
     axios
       .post(`${baseUrl}/upload`, {
-        file_key: videoSrc,
+        s3_url: videoSrc,
       })
       .then((res) => {
         setIsLoaded(false);
@@ -171,7 +171,7 @@ export const Edit = () => {
 
     axios
       .post(`${baseUrl}/translate`, {
-        file_key: videoSrc,
+        s3_url: videoSrc,
       })
       .then((res) => {
         setIsLoaded(false);
