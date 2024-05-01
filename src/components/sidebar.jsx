@@ -37,6 +37,7 @@ export const SideBar = () => {
           return (
             <Menu
               key={index}
+              isSelected={index === menu && isOpen}
               onClick={() => {
                 setMenu(index);
                 if (index === menu && isOpen === true) {
@@ -114,6 +115,9 @@ const Menu = styled.div`
   gap: 4px;
   color: white;
   cursor: pointer;
+  background-color: ${({ isSelected }) => {
+    return isSelected ? "#474747" : "rgba(0,0,0,0)";
+  }};
 `;
 
 const Text = styled.div`
